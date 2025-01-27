@@ -1,12 +1,14 @@
 import { Link } from 'react-router-dom';
 import { Tooltip } from 'react-tooltip';
 
-// Import all images from the images directory
 const images = import.meta.glob('../assets/images/*.png', { eager: true });
 
 function JokerCard({ joker }) {
-  // Convert joker name to match image filename format
-  const imageKey = `../assets/images/${joker.name.toLowerCase().replace(/\s+/g, '_')}.png`;
+  // Convert joker name to match image filename format (capitalize first letters)
+  const imageName = joker.name.split(' ')
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .join('_');
+  const imageKey = `../assets/images/${imageName}.png`;
   const imageUrl = images[imageKey]?.default;
   
   return (
@@ -19,6 +21,7 @@ function JokerCard({ joker }) {
       justifyContent: 'center',
       alignItems: 'center'
     }}>
+      {/* Rest of your component remains the same */}
       <div style={{
         position: 'absolute',
         top: '10px',
