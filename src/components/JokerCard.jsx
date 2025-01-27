@@ -1,8 +1,13 @@
 import { Link } from 'react-router-dom';
 import { Tooltip } from 'react-tooltip';
 
+// Import all images from the images directory
+const images = import.meta.glob('../assets/images/*.png', { eager: true });
+
 function JokerCard({ joker }) {
-  const imageUrl = new URL(`../assets/images/${joker.name.toLowerCase().replace(/\s+/g, '_')}.png`, import.meta.url).href;
+  // Convert joker name to match image filename format
+  const imageKey = `../assets/images/${joker.name.toLowerCase().replace(/\s+/g, '_')}.png`;
+  const imageUrl = images[imageKey]?.default;
   
   return (
     <div style={{
