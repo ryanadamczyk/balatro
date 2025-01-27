@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import { Tooltip } from 'react-tooltip';
 
 function JokerCard({ joker }) {
-  const imageUrl = `/src/assets/images/${joker.name.toLowerCase().replace(/\s+/g, '_')}.png`;
+  const imageUrl = new URL(`../assets/images/${joker.name.toLowerCase().replace(/\s+/g, '_')}.png`, import.meta.url).href;
   
   return (
     <div style={{
