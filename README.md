@@ -1,8 +1,19 @@
-# React + Vite
+# Balatro Joker Guide
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A small web reference for every **Joker** card in the roguelike deckbuilder **Balatro**. Browse all cards in a grid or table view and open any Joker for details on its cost, effect, rarity and unlock requirements.
 
-Currently, two official plugins are available:
+## Local development
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+1. Install dependencies with:
+   ```bash
+   npm install
+   ```
+2. Start the dev server:
+   ```bash
+   npm run dev
+   ```
+   The site will be available at the URL shown in your terminal.
+
+## Deployed site
+
+See it live at [radamczyk.com/balatro](https://radamczyk.com/balatro/).
