@@ -5,10 +5,9 @@ import './jokerStyles.css';
 const images = import.meta.glob('../assets/images/*.png', { eager: true });
 
 function JokerCard({ joker }) {
-  // Convert joker name to match image filename format (capitalize first letters)
-  const imageName = joker.name.split(' ')
-    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-    .join('_');
+  // Convert joker name to match image filename format by replacing spaces
+  // with underscores while preserving the original casing and punctuation.
+  const imageName = joker.name.split(' ').join('_');
   const imageKey = `../assets/images/${imageName}.png`;
   const imageUrl = images[imageKey]?.default;
   
