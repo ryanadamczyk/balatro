@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import './jokerStyles.css';
 
 function JokerTable({ jokers }) {
   const [filters, setFilters] = useState({
@@ -33,7 +34,7 @@ function JokerTable({ jokers }) {
     <select
       value={filters[column]}
       onChange={(e) => setFilters({ ...filters, [column]: e.target.value })}
-      style={filterSelectStyle}
+      className="joker-select"
     >
       <option value="">All</option>
       {getUniqueValues(column).map(value => (
@@ -43,67 +44,35 @@ function JokerTable({ jokers }) {
   );
 
   return (
-    <div style={{
-      padding: '1rem',
-      maxWidth: '1200px',
-      margin: '0 auto',
-      backgroundColor: '#1a1a1a',
-      borderRadius: '12px',
-      boxShadow: '0 4px 6px rgba(0, 0, 0, 0.2)'
-    }}>
-      <div style={{ 
-        marginBottom: '1rem', 
-        textAlign: 'right',
-        padding: '0 1rem'
-      }}>
+    <div className="joker-table-container">
+      <div className="joker-table-header">
         <button
           onClick={resetFilters}
-          style={{
-            padding: '0.8rem 1.5rem',
-            borderRadius: '8px',
-            border: '2px solid #c41e3a',
-            backgroundColor: '#2a1f1f',
-            color: '#fff',
-            cursor: 'pointer',
-            fontSize: '0.9rem',
-            fontFamily: 'Playfair Display, serif',
-            transition: 'all 0.3s ease',
-            boxShadow: '0 2px 4px rgba(0,0,0,0.2)',
-            ':hover': {
-              backgroundColor: '#c41e3a',
-              transform: 'translateY(-2px)'
-            }
-          }}
+          className="reset-filters-btn"
         >
           Reset Filters
         </button>
       </div>
-      <div style={{ overflowX: 'auto' }}>
-        <table style={{ 
-          width: '100%', 
-          borderCollapse: 'collapse',
-          backgroundColor: '#1f1f1f',
-          borderRadius: '8px',
-          overflow: 'hidden'
-        }}>
+      <div className="joker-table-wrapper">
+        <table className="joker-table">
           <thead>
             <tr>
-              <th style={tableHeaderStyle}>Number</th>
-              <th style={tableHeaderStyle}>Name</th>
-              <th style={tableHeaderStyle}>Effect</th>
-              <th style={tableHeaderStyle}>
+              <th className="joker-th">Number</th>
+              <th className="joker-th">Name</th>
+              <th className="joker-th">Effect</th>
+              <th className="joker-th">
                 Cost
                 <div><FilterDropdown column="cost" /></div>
               </th>
-              <th style={tableHeaderStyle}>
+              <th className="joker-th">
                 Rarity
                 <div><FilterDropdown column="rarity" /></div>
               </th>
-              <th style={tableHeaderStyle}>
+              <th className="joker-th">
                 Type
                 <div><FilterDropdown column="type" /></div>
               </th>
-              <th style={tableHeaderStyle}>
+              <th className="joker-th">
                 Activation
                 <div><FilterDropdown column="activation" /></div>
               </th>
@@ -111,34 +80,28 @@ function JokerTable({ jokers }) {
           </thead>
           <tbody>
             {filteredJokers.map((joker) => (
-              <tr key={joker.number} style={{
-                ...tableRowStyle,
-                backgroundColor: filteredJokers.indexOf(joker) % 2 === 0 ? '#1a1a1a' : '#1f1f1f'
-              }}>
-                <td style={tableCellStyle}>{joker.number}</td>
-                <td style={tableCellStyle}>
+              <tr
+                key={joker.number}
+                className="joker-row"
+                style={{
+                  backgroundColor:
+                    filteredJokers.indexOf(joker) % 2 === 0 ? '#1a1a1a' : '#1f1f1f'
+                }}
+              >
+                <td className="joker-td">{joker.number}</td>
+                <td className="joker-td">
                   <Link
                     to={`/joker/${joker.name.toLowerCase().replace(/\s+/g, '-')}`}
-                    style={{
-                      color: '#c41e3a',
-                      textDecoration: 'none',
-                      transition: 'all 0.3s ease',
-                      fontFamily: 'Playfair Display, serif',
-                      display: 'block',
-                      ':hover': {
-                        color: '#ff2e4a',
-                        textDecoration: 'underline'
-                      }
-                    }}
+                    className="joker-link"
                   >
                     {joker.name}
                   </Link>
                 </td>
-                <td style={tableCellStyle}>{joker.effect}</td>
-                <td style={tableCellStyle}>{joker.cost}</td>
-                <td style={tableCellStyle}>{joker.rarity}</td>
-                <td style={tableCellStyle}>{joker.type}</td>
-                <td style={tableCellStyle}>{joker.activation}</td>
+                <td className="joker-td">{joker.effect}</td>
+                <td className="joker-td">{joker.cost}</td>
+                <td className="joker-td">{joker.rarity}</td>
+                <td className="joker-td">{joker.type}</td>
+                <td className="joker-td">{joker.activation}</td>
               </tr>
             ))}
           </tbody>
@@ -147,46 +110,5 @@ function JokerTable({ jokers }) {
     </div>
   );
 }
-
-const tableHeaderStyle = {
-  padding: '16px',
-  textAlign: 'left',
-  borderBottom: '2px solid #c41e3a',
-  backgroundColor: '#2a1f1f',
-  color: '#fff',
-  fontFamily: 'Playfair Display, serif',
-  fontSize: '1.1rem'
-};
-
-const tableCellStyle = {
-  padding: '12px',
-  borderBottom: '1px solid #3a3a3a',
-  color: '#fff',
-  fontFamily: 'Playfair Display, serif'
-};
-
-const tableRowStyle = {
-  transition: 'background-color 0.3s ease',
-  ':hover': {
-    backgroundColor: '#2a1f1f'
-  }
-};
-
-const filterSelectStyle = {
-  backgroundColor: '#2a1f1f',
-  color: '#fff',
-  border: '1px solid #c41e3a',
-  borderRadius: '4px',
-  padding: '6px',
-  marginTop: '6px',
-  width: '100%',
-  fontSize: '0.9rem',
-  fontFamily: 'Playfair Display, serif',
-  cursor: 'pointer',
-  transition: 'all 0.3s ease',
-  ':hover': {
-    borderColor: '#ff2e4a'
-  }
-};
 
 export default JokerTable;

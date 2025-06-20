@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { Tooltip } from 'react-tooltip';
+import './jokerStyles.css';
 
 const images = import.meta.glob('../assets/images/*.png', { eager: true });
 
@@ -12,51 +13,18 @@ function JokerCard({ joker }) {
   const imageUrl = images[imageKey]?.default;
   
   return (
-    <div style={{
-      position: 'relative',
-      width: '180px',
-      height: '180px',
-      margin: '0 auto',
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center'
-    }}>
+    <div className="joker-card">
       {/* Rest of your component remains the same */}
-      <div style={{
-        position: 'absolute',
-        top: '10px',
-        width: '160px',
-        height: '160px',
-        backgroundColor: '#1f1f1f',
-        borderRadius: '12px',
-        boxShadow: '0 4px 8px rgba(0, 0, 0, 0.3)',
-        transition: 'all 0.3s ease',
-        border: '2px solid #2a1f1f',
-        zIndex: 1
-      }}/>
-      <Link 
+      <div className="joker-card-bg" />
+      <Link
         to={`/joker/${joker.name.toLowerCase().replace(/\s+/g, '-')}`}
         data-tooltip-id={`tooltip-${joker.number}`}
-        style={{
-          position: 'relative',
-          zIndex: 2,
-          display: 'block',
-          textDecoration: 'none',
-          transition: 'transform 0.3s ease',
-          ':hover': {
-            transform: 'translateY(-5px)'
-          }
-        }}
+        className="joker-card-link"
       >
-        <img 
+        <img
           src={imageUrl}
           alt={joker.name}
-          style={{ 
-            width: '180px', 
-            height: '180px', 
-            objectFit: 'contain',
-            filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.2))'
-          }}
+          className="joker-image"
         />
       </Link>
       
