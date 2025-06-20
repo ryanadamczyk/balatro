@@ -1,6 +1,8 @@
 import { useParams, Link } from 'react-router-dom';
 import jokersList from '../data/jokers_list.json';
 
+const images = import.meta.glob('../assets/images/*.png', { eager: true });
+
 function JokerPage() {
   const { name } = useParams();
   const joker = jokersList.jokers.find(
@@ -18,7 +20,11 @@ function JokerPage() {
     );
   }
 
-  const imageUrl = `/src/assets/images/${joker.name.toLowerCase().replace(/\s+/g, '_')}.png`;
+  const imageName = joker.name.split(' ')
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .join('_');
+  const imageKey = `../assets/images/${imageName}.png`;
+  const imageUrl = images[imageKey]?.default;
 
   return (
     <div style={{ 
