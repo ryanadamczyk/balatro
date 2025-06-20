@@ -1,4 +1,4 @@
-import { Routes, Route } from 'react-router-dom'; // Remove Router from import
+import { Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
 import JokerPage from './pages/JokerPage';
 
