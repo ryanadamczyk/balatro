@@ -1,7 +1,23 @@
 import { useParams, Link } from 'react-router-dom';
 import jokersList from '../data/jokers_list.json';
 
-const images = import.meta.glob('../assets/images/*.png', { eager: true });
+// Load all joker images using Vite's import.meta.glob
+const imageModules = import.meta.glob('../assets/images/*.png', { eager: true });
+
+// Map of formatted image names to actual URLs
+const images = {};
+for (const path in imageModules) {
+  const key = path.split('/').pop().replace('.png', '');
+  images[key] = imageModules[path].default;
+}
+
+// Helper to convert a joker name to the corresponding image key
+function toImageKey(name) {
+  return name
+    .split(' ')
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .join('_');
+}
 
 function JokerPage() {
   const { name } = useParams();
@@ -20,11 +36,7 @@ function JokerPage() {
     );
   }
 
-  const imageName = joker.name.split(' ')
-    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-    .join('_');
-  const imageKey = `../assets/images/${imageName}.png`;
-  const imageUrl = images[imageKey]?.default;
+  const imageUrl = images[toImageKey(joker.name)];
 
   return (
     <div style={{ 
