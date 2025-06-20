@@ -1,7 +1,6 @@
 import JokerCard from './JokerCard';
 
 function JokerGrid({ jokers }) {
-  console.log('JokerGrid jokers:', jokers);
 
   if (!jokers) {
     return <div>No jokers data available</div>;
