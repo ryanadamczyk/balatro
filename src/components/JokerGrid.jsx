@@ -1,7 +1,7 @@
 import JokerCard from './JokerCard';
+import { jokersPropType } from '../utils/propTypes';
 
 function JokerGrid({ jokers }) {
-
   if (!jokers) {
     return <div>No jokers data available</div>;
   }
@@ -23,5 +23,9 @@ function JokerGrid({ jokers }) {
     </div>
   );
 }
+
+JokerGrid.propTypes = {
+  jokers: jokersPropType,
+};
 
 export default JokerGrid;

@@ -49,6 +49,7 @@ function Home() {
           
           <button
             onClick={() => setViewMode(viewMode === 'grid' ? 'table' : 'grid')}
+            className="hover-bg-accent hover-raise"
             style={{
               padding: '0.8rem 1.5rem',
               borderRadius: '8px',
@@ -59,11 +60,7 @@ function Home() {
               fontSize: '1rem',
               fontFamily: 'Playfair Display, serif',
               transition: 'all 0.3s ease',
-              boxShadow: '0 2px 4px rgba(0,0,0,0.2)',
-              ':hover': {
-                backgroundColor: '#c41e3a',
-                transform: 'translateY(-2px)'
-              }
+              boxShadow: '0 2px 4px rgba(0,0,0,0.2)'
             }}
           >
             Switch to {viewMode === 'grid' ? 'Table' : 'Grid'} View

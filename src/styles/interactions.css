@@ -1,0 +1,31 @@
+.hover-bg-accent:hover {
+  background-color: #c41e3a !important;
+}
+
+.hover-raise:hover {
+  transform: translateY(-2px);
+}
+
+.hover-link-accent:hover {
+  color: #ff2e4a !important;
+  text-decoration: underline !important;
+}
+
+.hover-border-accent:hover {
+  border-color: #ff2e4a !important;
+}
+
+.table-row-hover:hover {
+  background-color: #2a1f1f !important;
+}
+
+.card-link-hover:hover {
+  transform: translateY(-5px);
+}
+
+.route-loading {
+  padding: 2rem;
+  text-align: center;
+  color: #fff;
+  font-family: 'Playfair Display', serif;
+}

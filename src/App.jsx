@@ -1,14 +1,18 @@
+import { lazy, Suspense } from 'react';
 import { Routes, Route } from 'react-router-dom';
-import Home from './pages/Home';
-import JokerPage from './pages/JokerPage';
+
+const Home = lazy(() => import('./pages/Home'));
+const JokerPage = lazy(() => import('./pages/JokerPage'));
 
 function App() {
   return (
     <div className="App">
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/joker/:name" element={<JokerPage />} />
-      </Routes>
+      <Suspense fallback={<div className="route-loading">Loading...</div>}>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/joker/:name" element={<JokerPage />} />
+        </Routes>
+      </Suspense>
     </div>
   );
 }

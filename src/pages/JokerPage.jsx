@@ -1,28 +1,13 @@
+import { useMemo } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import jokersList from '../data/jokers_list.json';
-
-// Load all joker images using Vite's import.meta.glob
-const imageModules = import.meta.glob('../assets/images/*.png', { eager: true });
-
-// Map of formatted image names to actual URLs
-const images = {};
-for (const path in imageModules) {
-  const key = path.split('/').pop().replace('.png', '');
-  images[key] = imageModules[path].default;
-}
-
-// Helper to convert a joker name to the corresponding image key
-function toImageKey(name) {
-  return name
-    .split(' ')
-    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-    .join('_');
-}
+import { getJokerImageUrl, toJokerSlug } from '../utils/jokerUtils';
 
 function JokerPage() {
   const { name } = useParams();
-  const joker = jokersList.jokers.find(
-    j => j.name.toLowerCase().replace(/\s+/g, '-') === name
+  const joker = useMemo(
+    () => jokersList.jokers.find((j) => toJokerSlug(j.name) === name),
+    [name]
   );
 
   if (!joker) {
@@ -36,38 +21,39 @@ function JokerPage() {
     );
   }
 
-  const imageUrl = images[toImageKey(joker.name)];
+  const imageUrl = getJokerImageUrl(joker.name);
 
   return (
-    <div style={{ 
-      padding: '2rem', 
-      maxWidth: '800px', 
+    <div style={{
+      padding: '2rem',
+      maxWidth: '800px',
       margin: '0 auto',
       backgroundColor: '#1a1a1a',
       minHeight: '100vh'
     }}>
-      <Link to="/" style={{ 
-        display: 'inline-block', 
-        marginBottom: '2rem',
-        padding: '0.8rem 1.5rem',
-        textDecoration: 'none',
-        color: '#fff',
-        backgroundColor: '#2a1f1f',
-        borderRadius: '8px',
-        border: '2px solid #c41e3a',
-        fontFamily: 'Playfair Display, serif',
-        transition: 'all 0.3s ease',
-        ':hover': {
-          backgroundColor: '#c41e3a',
-          transform: 'translateY(-2px)'
-        }
-      }}>
-        ← Back to Grid
+      <Link
+        to="/"
+        className="hover-bg-accent hover-raise"
+        style={{
+          display: 'inline-block',
+          marginBottom: '2rem',
+          padding: '0.8rem 1.5rem',
+          textDecoration: 'none',
+          color: '#fff',
+          backgroundColor: '#2a1f1f',
+          borderRadius: '8px',
+          border: '2px solid #c41e3a',
+          fontFamily: 'Playfair Display, serif',
+          transition: 'all 0.3s ease'
+        }}
+      >
+        <- Back to Grid
       </Link>
-      
-      <div style={{ 
-        display: 'flex', 
-        gap: '3rem', 
+
+      <div style={{
+        display: 'flex',
+        flexWrap: 'wrap',
+        gap: '3rem',
         alignItems: 'flex-start',
         backgroundColor: '#2a1f1f',
         padding: '2rem',
@@ -75,28 +61,30 @@ function JokerPage() {
         boxShadow: '0 4px 8px rgba(0, 0, 0, 0.3)',
         border: '2px solid #c41e3a'
       }}>
-        <img 
-          src={imageUrl}
+        <img
+          src={imageUrl ?? ''}
           alt={joker.name}
-          style={{ 
-            width: '250px', 
-            height: '250px', 
+          loading="lazy"
+          decoding="async"
+          style={{
+            width: '250px',
+            height: '250px',
             objectFit: 'contain',
             filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.2))'
           }}
         />
-        
+
         <div style={{
           color: '#fff',
           fontFamily: 'Playfair Display, serif'
         }}>
-          <h1 style={{ 
-            fontSize: '2.5rem', 
+          <h1 style={{
+            fontSize: '2.5rem',
             marginBottom: '1.5rem',
             color: '#c41e3a',
             textShadow: '2px 2px 4px rgba(0,0,0,0.3)'
           }}>{joker.name}</h1>
-          
+
           <div style={{ display: 'grid', gap: '1rem' }}>
             {[
               ['Effect', joker.effect],
@@ -107,10 +95,10 @@ function JokerPage() {
               ['Unlock', joker.unlock]
             ].map(([label, value]) => (
               <p key={label} style={{ fontSize: '1.1rem' }}>
-                <strong style={{ 
-                  color: '#c41e3a', 
-                  marginRight: '0.5rem' 
-                }}>{label}:</strong> 
+                <strong style={{
+                  color: '#c41e3a',
+                  marginRight: '0.5rem'
+                }}>{label}:</strong>
                 {value}
               </p>
             ))}

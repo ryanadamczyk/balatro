@@ -1,47 +1,63 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
+import { jokersPropType } from '../utils/propTypes';
+import { getJokerRoute } from '../utils/jokerUtils';
 import './jokerStyles.css';
 
-function JokerTable({ jokers }) {
-  const [filters, setFilters] = useState({
-    cost: '',
-    rarity: '',
-    type: '',
-    activation: ''
-  });
+const FILTER_COLUMNS = ['cost', 'rarity', 'type', 'activation'];
+const INITIAL_FILTERS = {
+  cost: '',
+  rarity: '',
+  type: '',
+  activation: '',
+};
 
-  const getUniqueValues = (key) => {
-    return [...new Set(jokers.map(joker => joker[key]))].sort();
-  };
-
-  const filteredJokers = jokers.filter(joker => {
-    return Object.keys(filters).every(key => {
-      if (!filters[key]) return true;
-      return joker[key] === filters[key];
-    });
-  });
-
-  const resetFilters = () => {
-    setFilters({
-      cost: '',
-      rarity: '',
-      type: '',
-      activation: ''
-    });
-  };
-
-  const FilterDropdown = ({ column }) => (
+function FilterDropdown({ value, options, onChange }) {
+  return (
     <select
-      value={filters[column]}
-      onChange={(e) => setFilters({ ...filters, [column]: e.target.value })}
+      value={value}
+      onChange={onChange}
       className="joker-select"
     >
       <option value="">All</option>
-      {getUniqueValues(column).map(value => (
-        <option key={value} value={value}>{value}</option>
+      {options.map((optionValue) => (
+        <option key={optionValue} value={optionValue}>
+          {optionValue}
+        </option>
       ))}
     </select>
   );
+}
+
+function JokerTable({ jokers }) {
+  const [filters, setFilters] = useState(INITIAL_FILTERS);
+
+  const uniqueFilterValues = useMemo(() => {
+    const valuesByColumn = {};
+
+    for (const column of FILTER_COLUMNS) {
+      valuesByColumn[column] = [...new Set(jokers.map((joker) => joker[column]))].sort();
+    }
+
+    return valuesByColumn;
+  }, [jokers]);
+
+  const filteredJokers = useMemo(() => {
+    return jokers.filter((joker) => {
+      return FILTER_COLUMNS.every((key) => {
+        if (!filters[key]) {
+          return true;
+        }
+
+        return joker[key] === filters[key];
+      });
+    });
+  }, [filters, jokers]);
+
+  const resetFilters = () => {
+    setFilters(INITIAL_FILTERS);
+  };
 
   return (
     <div className="joker-table-container">
@@ -62,36 +78,71 @@ function JokerTable({ jokers }) {
               <th className="joker-th">Effect</th>
               <th className="joker-th">
                 Cost
-                <div><FilterDropdown column="cost" /></div>
+                <div>
+                  <FilterDropdown
+                    value={filters.cost}
+                    options={uniqueFilterValues.cost}
+                    onChange={(e) => {
+                      const { value } = e.target;
+                      setFilters((previous) => ({ ...previous, cost: value }));
+                    }}
+                  />
+                </div>
               </th>
               <th className="joker-th">
                 Rarity
-                <div><FilterDropdown column="rarity" /></div>
+                <div>
+                  <FilterDropdown
+                    value={filters.rarity}
+                    options={uniqueFilterValues.rarity}
+                    onChange={(e) => {
+                      const { value } = e.target;
+                      setFilters((previous) => ({ ...previous, rarity: value }));
+                    }}
+                  />
+                </div>
               </th>
               <th className="joker-th">
                 Type
-                <div><FilterDropdown column="type" /></div>
+                <div>
+                  <FilterDropdown
+                    value={filters.type}
+                    options={uniqueFilterValues.type}
+                    onChange={(e) => {
+                      const { value } = e.target;
+                      setFilters((previous) => ({ ...previous, type: value }));
+                    }}
+                  />
+                </div>
               </th>
               <th className="joker-th">
                 Activation
-                <div><FilterDropdown column="activation" /></div>
+                <div>
+                  <FilterDropdown
+                    value={filters.activation}
+                    options={uniqueFilterValues.activation}
+                    onChange={(e) => {
+                      const { value } = e.target;
+                      setFilters((previous) => ({ ...previous, activation: value }));
+                    }}
+                  />
+                </div>
               </th>
             </tr>
           </thead>
           <tbody>
-            {filteredJokers.map((joker) => (
+            {filteredJokers.map((joker, index) => (
               <tr
                 key={joker.number}
                 className="joker-row"
                 style={{
-                  backgroundColor:
-                    filteredJokers.indexOf(joker) % 2 === 0 ? '#1a1a1a' : '#1f1f1f'
+                  backgroundColor: index % 2 === 0 ? '#1a1a1a' : '#1f1f1f'
                 }}
               >
                 <td className="joker-td">{joker.number}</td>
                 <td className="joker-td">
                   <Link
-                    to={`/joker/${joker.name.toLowerCase().replace(/\s+/g, '-')}`}
+                    to={getJokerRoute(joker.name)}
                     className="joker-link"
                   >
                     {joker.name}
@@ -110,5 +161,15 @@ function JokerTable({ jokers }) {
     </div>
   );
 }
+
+FilterDropdown.propTypes = {
+  value: PropTypes.string.isRequired,
+  options: PropTypes.arrayOf(PropTypes.string).isRequired,
+  onChange: PropTypes.func.isRequired,
+};
+
+JokerTable.propTypes = {
+  jokers: jokersPropType,
+};
 
 export default JokerTable;

@@ -1,33 +1,31 @@
+import { memo } from 'react';
 import { Link } from 'react-router-dom';
 import { Tooltip } from 'react-tooltip';
+import { jokerPropType } from '../utils/propTypes';
+import { getJokerImageUrl, getJokerRoute } from '../utils/jokerUtils';
 import './jokerStyles.css';
 
-const images = import.meta.glob('../assets/images/*.png', { eager: true });
-
 function JokerCard({ joker }) {
-  // Convert joker name to match image filename format by replacing spaces
-  // with underscores while preserving the original casing and punctuation.
-  const imageName = joker.name.split(' ').join('_');
-  const imageKey = `../assets/images/${imageName}.png`;
-  const imageUrl = images[imageKey]?.default;
-  
+  const imageUrl = getJokerImageUrl(joker.name);
+
   return (
     <div className="joker-card">
-      {/* Rest of your component remains the same */}
       <div className="joker-card-bg" />
       <Link
-        to={`/joker/${joker.name.toLowerCase().replace(/\s+/g, '-')}`}
+        to={getJokerRoute(joker.name)}
         data-tooltip-id={`tooltip-${joker.number}`}
         className="joker-card-link"
       >
         <img
-          src={imageUrl}
+          src={imageUrl ?? ''}
           alt={joker.name}
+          loading="lazy"
+          decoding="async"
           className="joker-image"
         />
       </Link>
-      
-      <Tooltip 
+
+      <Tooltip
         id={`tooltip-${joker.number}`}
         style={{
           backgroundColor: '#2a1f1f',
@@ -40,17 +38,17 @@ function JokerCard({ joker }) {
         }}
       >
         <div>
-          <h3 style={{ 
-            color: '#c41e3a', 
+          <h3 style={{
+            color: '#c41e3a',
             marginBottom: '0.5rem',
             fontSize: '1.2rem'
           }}>{joker.name}</h3>
-          <p style={{ 
+          <p style={{
             color: '#fff',
             marginBottom: '0.5rem',
             fontSize: '0.9rem'
           }}>{joker.effect}</p>
-          <p style={{ 
+          <p style={{
             color: '#ccc',
             fontSize: '0.9rem'
           }}>{joker.cost} | {joker.rarity}</p>
@@ -60,4 +58,14 @@ function JokerCard({ joker }) {
   );
 }
 
-export default JokerCard;
+JokerCard.propTypes = {
+  joker: jokerPropType.isRequired,
+};
+
+const MemoizedJokerCard = memo(JokerCard);
+
+MemoizedJokerCard.propTypes = {
+  joker: jokerPropType.isRequired,
+};
+
+export default MemoizedJokerCard;
