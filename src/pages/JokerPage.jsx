@@ -47,7 +47,7 @@ function JokerPage() {
           transition: 'all 0.3s ease'
         }}
       >
-        <- Back to Grid
+        {'<- Back to Grid'}
       </Link>
 
       <div style={{
