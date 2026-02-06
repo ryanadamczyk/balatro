@@ -8,22 +8,8 @@
   align-items: center;
 }
 
-.joker-card-bg {
-  position: absolute;
-  top: 10px;
-  width: 160px;
-  height: 160px;
-  background-color: #1f1f1f;
-  border-radius: 12px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-  transition: all 0.3s ease;
-  border: 2px solid #2a1f1f;
-  z-index: 1;
-}
-
 .joker-card-link {
   position: relative;
-  z-index: 2;
   display: block;
   text-decoration: none;
   transition: transform 0.3s ease;

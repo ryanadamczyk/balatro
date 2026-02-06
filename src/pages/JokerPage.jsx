@@ -33,6 +33,7 @@ function JokerPage() {
     }}>
       <Link
         to="/"
+        aria-label="Back to Grid"
         className="hover-bg-accent hover-raise"
         style={{
           display: 'inline-block',
@@ -47,7 +48,7 @@ function JokerPage() {
           transition: 'all 0.3s ease'
         }}
       >
-        {'<- Back to Grid'}
+        Back to Grid
       </Link>
 
       <div style={{

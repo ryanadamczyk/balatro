@@ -10,7 +10,6 @@ function JokerCard({ joker }) {
 
   return (
     <div className="joker-card">
-      <div className="joker-card-bg" />
       <Link
         to={getJokerRoute(joker.name)}
         data-tooltip-id={`tooltip-${joker.number}`}
