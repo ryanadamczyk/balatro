@@ -25,6 +25,8 @@ function JokerPage() {
 
   return (
     <div style={{
+      position: 'relative',
+      zIndex: 1,
       padding: '2rem',
       maxWidth: '800px',
       margin: '0 auto',
